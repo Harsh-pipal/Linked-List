@@ -178,6 +178,36 @@ void display(node *head){
     cout<<nl;
 }
 
+node* reverselist(node *head){
+
+    //making three pointers prev,curr,next
+
+    node* prev = NULL;
+    node* curr = head;
+    node* nextptr;
+
+    while(curr!=NULL){
+        nextptr=curr->next;
+        curr->next = prev;
+        prev=curr;
+        curr=nextptr;
+    }
+    return prev;
+
+}
+
+node* reverselistRecursive(node *head){
+
+    if(head==NULL or head->next==NULL){
+        return head;
+    }
+    node* newhead = reverselistRecursive(head->next);
+    head->next->next=head;
+    head->next = NULL; 
+
+    return newhead;
+}
+
 void solve(){
 
     //linked list is a data structure which consists of two parts
@@ -197,6 +227,8 @@ void solve(){
     deleteHead(head);
     display(head);
     searchTheKey(head,3);
+    node* newhead = reverselistRecursive(head);
+    display(newhead);
 
 }
 
