@@ -110,7 +110,7 @@ class node{
 void insertAtTail(node* &head, int val){
     node* n = new node(val);
 
-    if(head==NULL){
+    if(head==NULL){              //empty list
         head = n;
         return;
     }
@@ -150,7 +150,7 @@ void deleteHead(node* &head){
 
 void deleteNode(node* head, int val){
 
-    if(head==NULL)       //empty linked list, so just return
+    if(head==NULL)               //empty linked list, so just return
         return;
 
     if(head->next == NULL){      // only one element so call delete head func
@@ -208,6 +208,48 @@ node* reverselistRecursive(node *head){
     return newhead;
 }
 
+void makeCycle(node* head, int pos){
+    node* temp = head;
+    node* cyclestart;
+    int cnt=1;
+    while(temp->next!=NULL){
+        if(cnt==pos){
+            cyclestart=temp;
+        }
+        temp = temp->next;
+        cnt++;
+    }
+    temp->next = cyclestart;
+}
+
+bool detectCycle(node* head){
+    node* slow = head;
+    node* fast = head;              //floyyds algo - hare and tortoise algo
+
+    while(fast->next!=NULL and fast!=NULL){
+        if(slow==fast)
+            return true;
+        slow=slow->next;
+        fast=fast->next->next;
+    }
+    return false;
+}
+
+void removeCycle(node* head){
+    node* slow = head;
+    node* fast = head;
+    while(slow!=fast){
+        slow=slow->next;
+        fast=fast->next->next;
+    }
+    fast=head;
+    while(slow->next!=fast->next){
+        slow=slow->next;
+        fast=fast->next;
+    }
+    slow->next=NULL;
+}
+
 void solve(){
 
     //linked list is a data structure which consists of two parts
@@ -223,12 +265,18 @@ void solve(){
     insertAtTail(head,4);
     insertAtHead(head,5);
     display(head);
-    deleteNode(head,3);
-    deleteHead(head);
-    display(head);
+    // deleteNode(head,3);
+    // deleteHead(head);
+    // display(head);
     searchTheKey(head,3);
     node* newhead = reverselistRecursive(head);
     display(newhead);
+
+    //make cycle in linked list
+    makeCycle(head,3);                       //take head and index to form cycle
+    cout<<detectCycle(head)<<nl;
+    removeCycle(head);
+    cout<<detectCycle(head)<<nl;
 
 }
 
